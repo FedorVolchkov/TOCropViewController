@@ -383,7 +383,6 @@
 			isa = PBXGroup;
 			children = (
 				2238CF221FC0269C0081B957 /* AppDelegate.swift */,
-				486E602B234DC942007A9A52 /* TransformableService.swift */,
 				2238CF241FC0269C0081B957 /* ViewController.swift */,
 				2238CF261FC0269C0081B957 /* Main.storyboard */,
 				2238CF291FC0269C0081B957 /* Assets.xcassets */,
@@ -417,6 +416,7 @@
 		2238CF341FC027550081B957 /* CropViewController */ = {
 			isa = PBXGroup;
 			children = (
+				486E602B234DC942007A9A52 /* TransformableService.swift */,
 				2238CF351FC029880081B957 /* CropViewController.swift */,
 				2238CF3E1FC029A90081B957 /* CropViewController.h */,
 				2238CF3F1FC029A90081B957 /* Info.plist */,
