@@ -31,6 +31,28 @@
             alphaInfo == kCGImageAlphaPremultipliedFirst || alphaInfo == kCGImageAlphaPremultipliedLast);
 }
 
+- (UIImage *)roundImage {
+    UIImage *croppedImage = nil;
+    UIGraphicsBeginImageContextWithOptions(self.size, NO, 1);
+    {
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        
+        CGContextAddEllipseInRect(context, (CGRect){CGPointZero, self.size});
+        CGContextClip(context);
+        
+        //To conserve memory in not needing to completely re-render the image re-rotated,
+        //map the image to a view and then use Core Animation to manipulate its rotation
+       
+        CGContextTranslateCTM(context, 0, 0);
+        [self drawAtPoint:CGPointZero];
+        
+        croppedImage = UIGraphicsGetImageFromCurrentImageContext();
+    }
+    UIGraphicsEndImageContext();
+    
+    return [UIImage imageWithCGImage:croppedImage.CGImage scale: self.scale orientation:UIImageOrientationUp];
+}
+
 - (UIImage *)croppedImageWithFrame:(CGRect)frame angle:(NSInteger)angle circularClip:(BOOL)circular
 {
     UIImage *croppedImage = nil;

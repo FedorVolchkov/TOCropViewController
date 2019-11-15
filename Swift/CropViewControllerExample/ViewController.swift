@@ -22,9 +22,10 @@ class ViewController: UIViewController, CropViewControllerDelegate, UIImagePicke
         guard let image = (info[UIImagePickerController.InfoKey.originalImage] as? UIImage) else { return }
         
         let cropController = CropViewController(croppingStyle: croppingStyle, image: image)
-        //cropController.modalPresentationStyle = .fullScreen
         cropController.delegate = self
+        cropController.cropView.delegate = self
         
+        TransformableService.shared.setupToolbar(inCropVC: cropController)
         // Uncomment this if you wish to provide extra instructions via a title label
         //cropController.title = "Crop Image"
     
@@ -46,6 +47,7 @@ class ViewController: UIViewController, CropViewControllerDelegate, UIImagePicke
     
         //cropController.doneButtonTitle = "Title"
         //cropController.cancelButtonTitle = "Title"
+        cropController.aspectRatioLockDimensionSwapEnabled = true
         
         self.image = image
         
@@ -92,8 +94,7 @@ class ViewController: UIViewController, CropViewControllerDelegate, UIImagePicke
                                                    toView: imageView,
                                                    toFrame: CGRect.zero,
                                                    setup: { self.layoutImageView() },
-                                                   completion: {
-                                                    self.imageView.isHidden = false })
+                                                   completion: { self.imageView.isHidden = false })
         }
         else {
             self.imageView.isHidden = false
@@ -144,7 +145,7 @@ class ViewController: UIViewController, CropViewControllerDelegate, UIImagePicke
             
             let imagePicker = UIImagePickerController()
             imagePicker.modalPresentationStyle = .popover
-            imagePicker.popoverPresentationController?.barButtonItem = (sender as! UIBarButtonItem)
+            //imagePicker.popoverPresentationController?.barButtonItem = (sender as! UIBarButtonItem)
             imagePicker.preferredContentSize = CGSize(width: 320, height: 568)
             imagePicker.sourceType = .photoLibrary
             imagePicker.allowsEditing = false
@@ -165,6 +166,7 @@ class ViewController: UIViewController, CropViewControllerDelegate, UIImagePicke
         // When tapping the image view, restore the image to the previous cropping state
         let cropViewController = CropViewController(croppingStyle: self.croppingStyle, image: self.image!)
         cropViewController.delegate = self
+        cropViewController.cropView.delegate = self
         let viewFrame = view.convert(imageView.frame, to: navigationController!.view)
         
         cropViewController.presentAnimatedFrom(self,
@@ -219,3 +221,17 @@ class ViewController: UIViewController, CropViewControllerDelegate, UIImagePicke
     }
 }
 
+// MARK: -
+extension ViewController: TOCropViewDelegate {
+    func cropViewDidBecomeResettable(_ cropView: TOCropView) {
+        TransformableService.shared.resetButton.isEnabled = true
+        TransformableService.shared.resetButton.setTitleColor(.white, for: .normal)
+    }
+    
+    func cropViewDidBecomeNonResettable(_ cropView: TOCropView) {
+        TransformableService.shared.resetButton.isEnabled = false
+        TransformableService.shared.resetButton.setTitleColor(.gray, for: .normal)
+    }
+    
+    
+}

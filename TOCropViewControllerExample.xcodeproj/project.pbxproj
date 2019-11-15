@@ -94,6 +94,8 @@
 		2F5062F31F53E31F00AA9F14 /* TOCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22DB4D831B234CFA008B8466 /* TOCropViewController.m */; };
 		2F5062F41F53E32800AA9F14 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 223424751ABBC0CD00BBC2B1 /* ViewController.m */; };
 		2F5062F51F53E32D00AA9F14 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 223424771ABBC0CD00BBC2B1 /* Main.storyboard */; };
+		486E602C234DC942007A9A52 /* TransformableService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486E602B234DC942007A9A52 /* TransformableService.swift */; };
+		486E602D234DCB27007A9A52 /* TransformableService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486E602B234DC942007A9A52 /* TransformableService.swift */; };
 		FE3E0E3A21098448004DAE93 /* TOCropViewConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 220C8E9F21062DD300A9B25D /* TOCropViewConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -141,9 +143,6 @@
 		220C8EAA2106344D00A9B25D /* UIImage+CropRotate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+CropRotate.m"; sourceTree = "<group>"; };
 		220C8EAB2106344D00A9B25D /* UIImage+CropRotate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+CropRotate.h"; sourceTree = "<group>"; };
 		220C8EB32106353700A9B25D /* CropViewController-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CropViewController-Bridging-Header.h"; sourceTree = "<group>"; };
-		22154471235D92DE0005D91E /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/TOCropViewControllerLocalizable.strings"; sourceTree = "<group>"; };
-		22154472235D95330005D91E /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
-		22154473235D95330005D91E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		2234246A1ABBC0CD00BBC2B1 /* TOCropViewControllerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TOCropViewControllerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2234246E1ABBC0CD00BBC2B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2234246F1ABBC0CD00BBC2B1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -200,6 +199,7 @@
 		22DB4D9D1B234D4F008B8466 /* TOActivityCroppedImageProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TOActivityCroppedImageProvider.m; sourceTree = "<group>"; };
 		2F5062DC1F53E2D900AA9F14 /* TOCropViewControllerExample-Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "TOCropViewControllerExample-Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AADDE231CA5C43400AE0129 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/TOCropViewControllerLocalizable.strings; sourceTree = "<group>"; };
+		486E602B234DC942007A9A52 /* TransformableService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformableService.swift; sourceTree = "<group>"; };
 		6AE313501C47DAA200894C5B /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		6AE313511C47DAA200894C5B /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/TOCropViewControllerLocalizable.strings; sourceTree = "<group>"; };
 		88BBE90E22C206340073D22A /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/TOCropViewControllerLocalizable.strings; sourceTree = "<group>"; };
@@ -383,6 +383,7 @@
 			isa = PBXGroup;
 			children = (
 				2238CF221FC0269C0081B957 /* AppDelegate.swift */,
+				486E602B234DC942007A9A52 /* TransformableService.swift */,
 				2238CF241FC0269C0081B957 /* ViewController.swift */,
 				2238CF261FC0269C0081B957 /* Main.storyboard */,
 				2238CF291FC0269C0081B957 /* Assets.xcassets */,
@@ -426,8 +427,6 @@
 		2238CF581FC030C30081B957 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				22154472235D95330005D91E /* CHANGELOG.md */,
-				22154473235D95330005D91E /* README.md */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -628,9 +627,11 @@
 					};
 					223424691ABBC0CD00BBC2B1 = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = 9C25ZWATG7;
 					};
 					2238CF1F1FC0269C0081B957 = {
 						CreatedOnToolsVersion = 9.1;
+						DevelopmentTeam = 9C25ZWATG7;
 						ProvisioningStyle = Automatic;
 					};
 					2238CF3B1FC029A90081B957 = {
@@ -673,7 +674,6 @@
 				fa,
 				"fa-IR",
 				fi,
-				"pt-BR",
 			);
 			mainGroup = 223424611ABBC0CC00BBC2B1;
 			productRefGroup = 2234246B1ABBC0CD00BBC2B1 /* Products */;
@@ -799,6 +799,7 @@
 				22B68F971FFB380700601B1A /* TOCroppedImageAttributes.m in Sources */,
 				22B68F991FFB380700601B1A /* TOCropOverlayView.m in Sources */,
 				22B68F9A1FFB380700601B1A /* TOCropScrollView.m in Sources */,
+				486E602D234DCB27007A9A52 /* TransformableService.swift in Sources */,
 				22B68F9B1FFB380700601B1A /* TOCropToolbar.m in Sources */,
 				220C8EAF2106344D00A9B25D /* UIImage+CropRotate.m in Sources */,
 				22B68F9C1FFB380700601B1A /* TOCropView.m in Sources */,
@@ -816,6 +817,7 @@
 				220C8EAC2106344D00A9B25D /* UIImage+CropRotate.m in Sources */,
 				22B68F9F1FFB3C0800601B1A /* TOCropViewControllerTransitioning.m in Sources */,
 				22B68FA01FFB3C0800601B1A /* TOActivityCroppedImageProvider.m in Sources */,
+				486E602C234DC942007A9A52 /* TransformableService.swift in Sources */,
 				22B68FA11FFB3C0800601B1A /* TOCroppedImageAttributes.m in Sources */,
 				22B68FA31FFB3C0800601B1A /* TOCropOverlayView.m in Sources */,
 				22B68FA41FFB3C0800601B1A /* TOCropScrollView.m in Sources */,
@@ -922,7 +924,6 @@
 				E4C7D121221D7465003F381A /* fa */,
 				E4C7D122221D7548003F381A /* fa-IR */,
 				88BBE90E22C206340073D22A /* fi */,
-				22154471235D92DE0005D91E /* pt-BR */,
 			);
 			name = TOCropViewControllerLocalizable.strings;
 			sourceTree = "<group>";
@@ -1137,7 +1138,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 9C25ZWATG7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1146,7 +1147,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Objective-C/TOCropViewControllerExample/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.timoliver.TOCropViewControllerExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chernyshtaras.CropVC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1155,7 +1156,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 9C25ZWATG7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1164,7 +1165,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Objective-C/TOCropViewControllerExample/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.timoliver.TOCropViewControllerExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chernyshtaras.CropVC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1181,12 +1182,12 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 9C25ZWATG7;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "$(SRCROOT)/Swift/CropViewControllerExample/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.timoliver.CropViewControllerExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chernyshtaras.CropVCO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "Swift/CropViewControllerExample/CropViewController-Bridging-Header.h";
@@ -1207,12 +1208,12 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 9C25ZWATG7;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "$(SRCROOT)/Swift/CropViewControllerExample/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.timoliver.CropViewControllerExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chernyshtaras.CropVCO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Swift/CropViewControllerExample/CropViewController-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -1245,8 +1246,9 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.timoliver.CropViewController;
+				PRODUCT_BUNDLE_IDENTIFIER = net.timoliver.CropViewController2;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1281,8 +1283,9 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.timoliver.CropViewController;
+				PRODUCT_BUNDLE_IDENTIFIER = net.timoliver.CropViewController2;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";

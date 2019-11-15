@@ -36,6 +36,7 @@
 
 @property (nonatomic, strong) UIButton *resetButton;
 @property (nonatomic, strong) UIButton *clampButton;
+@property (nonatomic, strong) UIButton *flipYButton;
 
 @property (nonatomic, strong) UIButton *rotateButton; // defaults to counterclockwise button for legacy compatibility
 
@@ -70,6 +71,9 @@
     // Get the resource bundle depending on the framework/dependency manager we're using
     NSBundle *resourceBundle = TO_CROP_VIEW_RESOURCE_BUNDLE_FOR_OBJECT(self);
     
+    
+    //Cancel and done butoon names and functionality is swapped
+    
     _doneTextButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [_doneTextButton setTitle: _doneTextButtonTitle ?
         _doneTextButtonTitle : NSLocalizedStringFromTableInBundle(@"Done",
@@ -77,20 +81,19 @@
 																  resourceBundle,
                                                                   nil)
                      forState:UIControlStateNormal];
-    [_doneTextButton setTitleColor:[UIColor colorWithRed:1.0f green:0.8f blue:0.0f alpha:1.0f] forState:UIControlStateNormal];
     [_doneTextButton.titleLabel setFont:[UIFont systemFontOfSize:17.0f]];
+    [_doneTextButton setTitleColor: UIColor.whiteColor forState:(UIControlState)UIControlStateNormal];
     [_doneTextButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [_doneTextButton sizeToFit];
     [self addSubview:_doneTextButton];
     
     _doneIconButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [_doneIconButton setImage:[TOCropToolbar doneImage] forState:UIControlStateNormal];
-    [_doneIconButton setTintColor:[UIColor colorWithRed:1.0f green:0.8f blue:0.0f alpha:1.0f]];
+    [_doneIconButton setImage:[TOCropToolbar cancelImage] forState:UIControlStateNormal];
+    [_doneIconButton setTintColor: UIColor.whiteColor];
     [_doneIconButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_doneIconButton];
     
     _cancelTextButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    
     [_cancelTextButton setTitle: _cancelTextButtonTitle ?
         _cancelTextButtonTitle : NSLocalizedStringFromTableInBundle(@"Cancel",
 																	@"TOCropViewControllerLocalizable",
@@ -98,12 +101,13 @@
                                                                     nil)
                        forState:UIControlStateNormal];
     [_cancelTextButton.titleLabel setFont:[UIFont systemFontOfSize:17.0f]];
+    [_cancelTextButton setTitleColor: UIColor.whiteColor forState:(UIControlState)UIControlStateNormal];
     [_cancelTextButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [_cancelTextButton sizeToFit];
     [self addSubview:_cancelTextButton];
     
     _cancelIconButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [_cancelIconButton setImage:[TOCropToolbar cancelImage] forState:UIControlStateNormal];
+    [_cancelIconButton setImage:[TOCropToolbar doneImage] forState:UIControlStateNormal];
     [_cancelIconButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_cancelIconButton];
     
@@ -113,6 +117,13 @@
     [_clampButton setImage:[TOCropToolbar clampImage] forState:UIControlStateNormal];
     [_clampButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_clampButton];
+    
+    _flipYButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    _flipYButton.contentMode = UIViewContentModeCenter;
+    _flipYButton.tintColor = [UIColor whiteColor];
+    [_flipYButton setImage:[TOCropToolbar clampImage] forState:UIControlStateNormal];
+    [_flipYButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_flipYButton];
     
     _rotateCounterclockwiseButton = [UIButton buttonWithType:UIButtonTypeSystem];
     _rotateCounterclockwiseButton.contentMode = UIViewContentModeCenter;
@@ -184,6 +195,7 @@
             frame.origin.x = boundsSize.width - (frame.size.width + insetPadding);
         }
         self.cancelTextButton.frame = frame;
+        [[self.cancelTextButton titleLabel] setTextColor: [UIColor colorWithRed:0.0f green:122.f/255.f blue:1.0f alpha:1.0f]];
         
         // Work out the Done button frame
         frame.size.width = MIN(self.frame.size.width / 3.0, self.doneTextButton.frame.size.width);
@@ -227,10 +239,13 @@
         if (!self.clampButtonHidden) {
             [buttonsInOrderHorizontally addObject:self.clampButton];
         }
+//Aspect ratio button
+//        if (!self.rotateClockwiseButtonHidden) {
+//            [buttonsInOrderHorizontally addObject:self.rotateClockwiseButton];
+//        }
         
-        if (!self.rotateClockwiseButtonHidden) {
-            [buttonsInOrderHorizontally addObject:self.rotateClockwiseButton];
-        }
+        [buttonsInOrderHorizontally addObject:self.flipYButton];
+        
         [self layoutToolbarButtons:buttonsInOrderHorizontally withSameButtonSize:buttonSize inContainerRect:containerRect horizontally:YES];
     }
     else {
@@ -265,10 +280,12 @@
         if (!self.clampButtonHidden) {
             [buttonsInOrderVertically addObject:self.clampButton];
         }
+//Aspect ratio button
+//        if (!self.rotateClockwiseButtonHidden) {
+//            [buttonsInOrderVertically addObject:self.rotateClockwiseButton];
+//        }
         
-        if (!self.rotateClockwiseButtonHidden) {
-            [buttonsInOrderVertically addObject:self.rotateClockwiseButton];
-        }
+        [buttonsInOrderVertically addObject:self.flipYButton];
         
         [self layoutToolbarButtons:buttonsInOrderVertically withSameButtonSize:buttonSize inContainerRect:containerRect horizontally:NO];
     }
@@ -281,6 +298,7 @@
         NSInteger count = buttons.count;
         CGFloat fixedSize = horizontally ? size.width : size.height;
         CGFloat maxLength = horizontally ? CGRectGetWidth(containerRect) : CGRectGetHeight(containerRect);
+        //maxLength = maxLength / 2;
         CGFloat padding = (maxLength - fixedSize * count) / (count + 1);
         
         for (NSInteger i = 0; i < count; i++) {
@@ -319,6 +337,10 @@
     }
     else if (button == self.clampButton && self.clampButtonTapped) {
         self.clampButtonTapped();
+        return;
+    }
+    else if (button == self.flipYButton && self.flipYButtonTapped) {
+        self.flipYButtonTapped();
         return;
     }
 }

@@ -75,7 +75,7 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 {
     NSParameterAssert(image);
 
-    self = [super initWithNibName:nil bundle:nil];
+    self = [super init];
     if (self) {
         // Init parameters
         _image = image;
@@ -110,25 +110,24 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
     // Set up view controller properties
     self.transitioningDelegate = self;
     self.view.backgroundColor = self.cropView.backgroundColor;
-    
-    BOOL circularMode = (self.croppingStyle == TOCropViewCroppingStyleCircular);
 
     // Layout the views initially
     self.cropView.frame = [self frameForCropViewWithVerticalLayout:self.verticalLayout];
     self.toolbar.frame = [self frameForToolbarWithVerticalLayout:self.verticalLayout];
 
     // Set up toolbar default behaviour
-    self.toolbar.clampButtonHidden = self.aspectRatioPickerButtonHidden || circularMode;
+    self.toolbar.clampButtonHidden = self.aspectRatioPickerButtonHidden;
     self.toolbar.rotateClockwiseButtonHidden = self.rotateClockwiseButtonHidden;
     
     // Set up the toolbar button actions
     __weak typeof(self) weakSelf = self;
-    self.toolbar.doneButtonTapped   = ^{ [weakSelf doneButtonTapped]; };
-    self.toolbar.cancelButtonTapped = ^{ [weakSelf cancelButtonTapped]; };
+    self.toolbar.doneButtonTapped  = ^{ [weakSelf cancelButtonTapped]; };
+    self.toolbar.cancelButtonTapped = ^{ [weakSelf doneButtonTapped]; };
     self.toolbar.resetButtonTapped = ^{ [weakSelf resetCropViewLayout]; };
-    self.toolbar.clampButtonTapped = ^{ [weakSelf showAspectRatioDialog]; };
+    self.toolbar.clampButtonTapped = ^{ [weakSelf flipXCropView]; };
+    self.toolbar.flipYButtonTapped = ^{ [weakSelf flipYCropView]; };
     self.toolbar.rotateCounterclockwiseButtonTapped = ^{ [weakSelf rotateCropViewCounterclockwise]; };
-    self.toolbar.rotateClockwiseButtonTapped        = ^{ [weakSelf rotateCropViewClockwise]; };
+    self.toolbar.rotateClockwiseButtonTapped = ^{ [weakSelf showAspectRatioDialog]; };
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -446,11 +445,11 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
         [self.cropView moveCroppedContentToCenterAnimated:NO];
     }
 
-    [UIView performWithoutAnimation:^{
+    //[UIView performWithoutAnimation:^{
         self.toolbar.frame = [self frameForToolbarWithVerticalLayout:self.verticalLayout];
         [self adjustToolbarInsets];
         [self.toolbar setNeedsLayout];
-    }];
+    //}];
 }
 
 #pragma mark - Rotation Handling -
@@ -897,6 +896,16 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
     }
 }
 
+- (void)flipXCropView
+{
+    [self.cropView flipXImageAnimated:YES];
+}
+
+- (void)flipYCropView
+{
+    [self.cropView flipYImageAnimated:YES];
+}
+
 - (void)doneButtonTapped
 {
     CGRect cropFrame = self.cropView.imageCropFrame;
@@ -970,7 +979,17 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 
     //If cropping circular and the circular generation delegate/block is implemented, call it
     if (self.croppingStyle == TOCropViewCroppingStyleCircular && (isCircularImageDelegateAvailable || isCircularImageCallbackAvailable)) {
-        UIImage *image = [self.image croppedImageWithFrame:cropFrame angle:angle circularClip:YES];
+        UIImage *image;
+        
+        UIGraphicsBeginImageContext(self.cropView.cropBoxFrame.size);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextAddEllipseInRect(context, (CGRect){CGPointZero, self.cropView.cropBoxFrame.size});
+        CGContextClip(context);
+        CGContextTranslateCTM(context, -self.cropView.cropBoxFrame.origin.x, -self.cropView.cropBoxFrame.origin.y);
+        [self.cropView.layer renderInContext:context];
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        //image = [image roundImage];
         
         //Dispatch on the next run-loop so the animation isn't interuppted by the crop operation
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.03f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -987,12 +1006,13 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
     //If the delegate/block that requires the specific cropped image is provided, call it
     else if (isDidCropToImageDelegateAvailable || isDidCropToImageCallbackAvailable) {
         UIImage *image = nil;
-        if (angle == 0 && CGRectEqualToRect(cropFrame, (CGRect){CGPointZero, self.image.size})) {
-            image = self.image;
-        }
-        else {
-            image = [self.image croppedImageWithFrame:cropFrame angle:angle circularClip:NO];
-        }
+
+        UIGraphicsBeginImageContext(self.cropView.cropBoxFrame.size);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextTranslateCTM(context, -self.cropView.cropBoxFrame.origin.x, -self.cropView.cropBoxFrame.origin.y);
+        [self.cropView.layer renderInContext:context];
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
         
         //Dispatch on the next run-loop so the animation isn't interuppted by the crop operation
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.03f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -1081,7 +1101,8 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 
 - (void)setAspectRatioLockEnabled:(BOOL)aspectRatioLockEnabled
 {
-    self.toolbar.clampButtonGlowing = aspectRatioLockEnabled;
+    /// highlight clamt button if it pressed
+    self.toolbar.clampButtonGlowing = NO;//aspectRatioLockEnabled;
     self.cropView.aspectRatioLockEnabled = aspectRatioLockEnabled;
     if (!self.aspectRatioPickerButtonHidden) {
         self.aspectRatioPickerButtonHidden = (aspectRatioLockEnabled && self.resetAspectRatioEnabled == NO);
@@ -1197,7 +1218,7 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 
 - (BOOL)statusBarHidden
 {
-    // Defer behaviour to the hosting navigation controller
+    // Defer behavioir to the hosting navigation controller
     if (self.navigationController) {
         return self.navigationController.prefersStatusBarHidden;
     }
@@ -1217,14 +1238,6 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
     CGFloat statusBarHeight = 0.0f;
     if (@available(iOS 11.0, *)) {
         statusBarHeight = self.view.safeAreaInsets.top;
-
-        // On non-Face ID devices, always disregard the top inset
-        // unless we explicitly set the status bar to be visible.
-        if (self.statusBarHidden &&
-            self.view.safeAreaInsets.bottom <= FLT_EPSILON)
-        {
-            statusBarHeight = 0.0f;
-        }
     }
     else {
         if (self.statusBarHidden) {
@@ -1242,8 +1255,14 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 {
     UIEdgeInsets insets = UIEdgeInsetsZero;
     if (@available(iOS 11.0, *)) {
-        insets = self.view.safeAreaInsets;
-        insets.top = self.statusBarHeight;
+        
+        insets = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
+
+        // Since iPhone X insets are always 44, check if this is merely
+        // accounting for a non-X status bar and cancel it
+        if (insets.top <= 40.0f + FLT_EPSILON) {
+            insets.top = self.statusBarHeight;
+        }
     }
     else {
         insets.top = self.statusBarHeight;

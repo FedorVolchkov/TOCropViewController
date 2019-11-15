@@ -443,13 +443,21 @@ open class CropViewController: UIViewController, TOCropViewControllerDelegate {
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         
         // Defer adding the view until we're about to be presented
         if toCropViewController.view.superview == nil {
             view.addSubview(toCropViewController.view)
+        }
+        
+        TransformableService.shared.setupCropVC(inCropVC: self)
+        TransformableService.shared.setupToolbar(inCropVC: self)
+        TransformableService.shared.addConstraintToResetButton(inView: view)
+        TransformableService.shared.resetTapped = {
+            self.resetCropViewLayout()
         }
     }
     
@@ -557,7 +565,6 @@ open class CropViewController: UIViewController, TOCropViewControllerDelegate {
 
 extension CropViewController {
     fileprivate func setUpCropController() {
-        modalPresentationStyle = .fullScreen
         addChild(toCropViewController)
         transitioningDelegate = (toCropViewController as! UIViewControllerTransitioningDelegate)
         toCropViewController.delegate = self

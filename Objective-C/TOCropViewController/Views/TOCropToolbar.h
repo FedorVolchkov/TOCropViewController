@@ -51,6 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly)  UIButton *rotateCounterclockwiseButton;
 @property (nonatomic, strong, readonly)  UIButton *resetButton;
 @property (nonatomic, strong, readonly)  UIButton *clampButton;
+@property (nonatomic, strong, readonly)  UIButton *flipYButton;
 @property (nullable, nonatomic, strong, readonly) UIButton *rotateClockwiseButton;
 
 @property (nonatomic, readonly) UIButton *rotateButton; // Points to `rotateCounterClockwiseButton`
@@ -61,6 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy) void (^rotateCounterclockwiseButtonTapped)(void);
 @property (nullable, nonatomic, copy) void (^rotateClockwiseButtonTapped)(void);
 @property (nullable, nonatomic, copy) void (^clampButtonTapped)(void);
+@property (nullable, nonatomic, copy) void (^flipYButtonTapped)(void);
 @property (nullable, nonatomic, copy) void (^resetButtonTapped)(void);
 
 /* State management for the 'clamp' button */
