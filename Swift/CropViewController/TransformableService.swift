@@ -16,11 +16,11 @@ public class TransformableService {
     
     lazy var resetButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Reset", for: .normal)
+        button.setTitle("", for: .normal)
         button.setTitleColor(.gray, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(tappedResetButton), for: .touchUpInside)
-        button.isEnabled = false
+        button.isHidden = false
         return button
     }()
     
@@ -57,20 +57,21 @@ public class TransformableService {
         
         let yellow = TransformableService.shared.hexStringToUIColor(hex: "#CBB147")
         let white = TransformableService.shared.hexStringToUIColor(hex: "#FFFFFF")
+        let blue = TransformableService.shared.hexStringToUIColor(hex: "#007AFF")
         
-        /// 'doneButton' for CropVC
-        vc.toolbar.cancelTextButton.setTitleColor(yellow, for: .normal)
-        
-        /// 'cancelButton' for CropVC
-        vc.toolbar.doneTextButton.setTitleColor(white, for: .normal)
+//        /// 'doneButton' for CropVC
+//        vc.toolbar.cancelTextButton.setTitleColor(white, for: .normal)
+//        
+//        /// 'cancelButton' for CropVC
+//        vc.toolbar.doneTextButton.setTitleColor(blue, for: .normal)
         
         vc.toolbar.clampButton.setImage(UIImage(named: "ic_ mirrore_white"), for: .normal)
         vc.toolbar.rotateButton.setImage(UIImage(named: "ic_rotate_white"), for: .normal)
         vc.toolbar.rotateClockwiseButton?.setImage(UIImage(named: "ic_frame_white"), for: .normal)
         vc.toolbar.flipYButton.setImage(UIImage(named: "ic_mirrore_hor"), for: .normal)
         
-        vc.doneButtonTitle = "Cancel"
-        vc.cancelButtonTitle = "Done"
+//        vc.doneButtonTitle = "Cancel"
+//        vc.cancelButtonTitle = "Done"
         vc.resetButtonHidden = true
     }
     

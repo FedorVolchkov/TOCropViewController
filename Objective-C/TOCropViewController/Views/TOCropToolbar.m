@@ -143,7 +143,7 @@
     _resetButton.contentMode = UIViewContentModeCenter;
     _resetButton.tintColor = [UIColor whiteColor];
     _resetButton.enabled = NO;
-    [_resetButton setImage:[TOCropToolbar resetImage] forState:UIControlStateNormal];
+    //[_resetButton setImage:[TOCropToolbar resetImage] forState:UIControlStateNormal];
     [_resetButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_resetButton];
 }
@@ -195,7 +195,6 @@
             frame.origin.x = boundsSize.width - (frame.size.width + insetPadding);
         }
         self.cancelTextButton.frame = frame;
-        [[self.cancelTextButton titleLabel] setTextColor: [UIColor colorWithRed:0.0f green:122.f/255.f blue:1.0f alpha:1.0f]];
         
         // Work out the Done button frame
         frame.size.width = MIN(self.frame.size.width / 3.0, self.doneTextButton.frame.size.width);
@@ -289,6 +288,8 @@
         
         [self layoutToolbarButtons:buttonsInOrderVertically withSameButtonSize:buttonSize inContainerRect:containerRect horizontally:NO];
     }
+    
+    [[self.doneTextButton titleLabel] setTextColor: [UIColor colorWithRed:0.0f green:122.f/255.f blue:1.0f alpha:1.0f]];
 }
 
 // The convenience method for calculating button's frame inside of the container rect
@@ -316,7 +317,7 @@
     }
 }
 
-- (void)buttonTapped:(id)button
+- (void)buttonTapped:(UIButton* )button
 {
     if (button == self.cancelTextButton || button == self.cancelIconButton) {
         if (self.cancelButtonTapped)

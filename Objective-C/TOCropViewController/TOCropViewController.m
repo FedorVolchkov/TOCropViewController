@@ -121,8 +121,8 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
     
     // Set up the toolbar button actions
     __weak typeof(self) weakSelf = self;
-    self.toolbar.doneButtonTapped  = ^{ [weakSelf cancelButtonTapped]; };
-    self.toolbar.cancelButtonTapped = ^{ [weakSelf doneButtonTapped]; };
+    self.toolbar.doneButtonTapped  = ^{ [weakSelf doneButtonTapped]; };
+    self.toolbar.cancelButtonTapped = ^{ [weakSelf cancelButtonTapped]; };
     self.toolbar.resetButtonTapped = ^{ [weakSelf resetCropViewLayout]; };
     self.toolbar.clampButtonTapped = ^{ [weakSelf flipXCropView]; };
     self.toolbar.flipYButtonTapped = ^{ [weakSelf flipYCropView]; };
@@ -691,7 +691,7 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 #pragma mark - Crop View Delegates -
 - (void)cropViewDidBecomeResettable:(TOCropView *)cropView
 {
-    self.toolbar.resetButtonEnabled = YES;
+    self.toolbar.resetButtonEnabled = NO;
 }
 
 - (void)cropViewDidBecomeNonResettable:(TOCropView *)cropView
